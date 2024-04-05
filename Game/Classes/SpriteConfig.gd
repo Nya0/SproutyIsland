@@ -1,5 +1,5 @@
-extends Resource
 class_name SpriteConfig
+extends Resource
 
 @export var animations: Array[String]
 
@@ -18,6 +18,7 @@ func setup(animated_sprite: AnimatedSprite3D) -> void:
 		var animation_name = animations[index]
 		
 		sprite_frames.add_animation(animation_name)
+		sprite_frames.set_animation_speed(animation_name, 10)
 
 		for frame in range(frames):
 		
@@ -29,4 +30,3 @@ func setup(animated_sprite: AnimatedSprite3D) -> void:
 			
 			var final_frame := ImageTexture.create_from_image(frame_data)
 			sprite_frames.add_frame(animation_name, final_frame)
-

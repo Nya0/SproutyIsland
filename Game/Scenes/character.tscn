@@ -1,8 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://c6g6f64ak3mer"]
+[gd_scene load_steps=12 format=3 uid="uid://c6g6f64ak3mer"]
 
 [ext_resource type="Script" path="res://Game/Scripts/character.gd" id="1_3kxfg"]
 [ext_resource type="Texture2D" uid="uid://bn2j52whqxl3q" path="res://Assets/Art/Characters/Basic Charakter Spritesheet.png" id="1_8fvba"]
-[ext_resource type="Resource" uid="uid://cxgur00u2nsvm" path="res://Game/Sprites/MovementConfig.tres" id="2_bpg3x"]
+[ext_resource type="Resource" uid="uid://cxgur00u2nsvm" path="res://Game/Sprites/MovementConfig.tres" id="4_g0wsd"]
+[ext_resource type="Script" path="res://Game/Classes/Components/AnimateComponent.gd" id="4_qc1nw"]
+[ext_resource type="Script" path="res://Game/Classes/Components/ControlComponent.gd" id="5_n2ywt"]
+[ext_resource type="Script" path="res://Game/Scenes/VelocityComponent.gd" id="5_uxdwf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s88yf"]
+atlas = ExtResource("1_8fvba")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_386rg"]
+atlas = ExtResource("1_8fvba")
+region = Rect2(48, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_slr78"]
 atlas = ExtResource("1_8fvba")
@@ -11,6 +22,12 @@ region = Rect2(0, 0, 48, 48)
 [sub_resource type="SpriteFrames" id="SpriteFrames_h3uoo"]
 animations = [{
 "frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s88yf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_386rg")
+}, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_slr78")
 }],
@@ -22,13 +39,16 @@ animations = [{
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p45or"]
 height = 1.53633
 
-[node name="Character" type="CharacterBody3D"]
+[node name="Character" type="CharacterBody3D" node_paths=PackedStringArray("controlComponent", "velocityComponent")]
 script = ExtResource("1_3kxfg")
-gravity = 70.0
-sprite_configs = Array[Resource("res://Game/Classes/SpriteConfig.gd")]([ExtResource("2_bpg3x")])
+controlComponent = NodePath("ControlComponent")
+velocityComponent = NodePath("VelocityComponent")
 
 [node name="AnimatedSprite" type="AnimatedSprite3D" parent="."]
+cast_shadow = 0
+gi_mode = 0
 pixel_size = 0.105
+billboard = 2
 shaded = true
 alpha_cut = 2
 texture_filter = 0
@@ -38,3 +58,25 @@ animation = &"idle"
 [node name="CollisionCapsule" type="CollisionShape3D" parent="."]
 transform = Transform3D(1.06, 0, 0, 0, 1.06, 0, 0, 0, 1.06, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_p45or")
+
+[node name="AnimateComponent" type="Node" parent="." node_paths=PackedStringArray("animated_sprite")]
+script = ExtResource("4_qc1nw")
+sprite_configs = Array[Resource("res://Game/Classes/SpriteConfig.gd")]([ExtResource("4_g0wsd")])
+animated_sprite = NodePath("../AnimatedSprite")
+
+[node name="VelocityComponent" type="Node" parent="."]
+script = ExtResource("5_uxdwf")
+maxSpeed = 12.0
+accelerationCoefficient = 4.0
+debugMode = false
+
+[node name="ControlComponent" type="Node" parent="." node_paths=PackedStringArray("velocityComponent", "animateComponent")]
+script = ExtResource("5_n2ywt")
+velocityComponent = NodePath("../VelocityComponent")
+animateComponent = NodePath("../AnimateComponent")
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.70619, 0)
+cast_shadow = 3
+height = 0.002
+sides = 28

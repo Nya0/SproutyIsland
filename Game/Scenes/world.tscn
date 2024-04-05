@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bifg4pvg2acc2"]
+[gd_scene load_steps=7 format=3 uid="uid://bifg4pvg2acc2"]
 
 [ext_resource type="PackedScene" uid="uid://c6g6f64ak3mer" path="res://Game/Scenes/character.tscn" id="1_fowho"]
-[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3D.gd" id="2_ep4j2"]
-[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_7d1rw"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="2_ogdhp"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3D.gd" id="3_psinv"]
+[ext_resource type="PackedScene" uid="uid://mul8p51w72ab" path="res://Game/Scenes/main.tscn" id="4_qlyxw"]
 
 [sub_resource type="Environment" id="Environment_8i8nr"]
 background_mode = 1
@@ -36,30 +37,38 @@ directional_shadow_pancake_size = 4.1
 use_collision = true
 size = Vector3(56.9314, 0.0197754, 55.719)
 
+[node name="Character" parent="." instance=ExtResource("1_fowho")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.444046, 0.872943, -2.27306)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.999988, 0, 0, 0, 0.999988, 0.444046, 1.07294, 5.72684)
+
+[node name="PhantomCameraHost" type="Node" parent="Camera3D"]
+script = ExtResource("2_ogdhp")
+
 [node name="PhantomCamera3D" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.899949, 0.435963, 0, -0.435963, 0.899949, 0, 4.20914, 6.905)
-script = ExtResource("2_ep4j2")
+transform = Transform3D(1, 0, 0, 0, 0.999988, 0, 0, 0, 0.999988, 0.444046, 1.07294, 5.72684)
+script = ExtResource("3_psinv")
 priority_override = false
 priority = 0
-follow_mode = 2
+follow_mode = 6
 follow_target = NodePath("../Character")
-follow_parameters/target_offset = Vector3(0, 3.345, 6.905)
+follow_parameters/spring_arm/spring_length = 8.0
+follow_parameters/spring_arm/collision_mask = 1
+follow_parameters/spring_arm/shape = null
+follow_parameters/spring_arm/margin = 0.01
+follow_parameters/target_offset = Vector3(0, 0.2, 0)
 follow_parameters/damping = true
-follow_parameters/damping_value = 25.236
-look_at_mode = 2
-look_at_target = NodePath("../Character")
-look_at_parameters/look_at_target_offset = Vector3(0, 0, 0)
+follow_parameters/damping_value = 15.0
+look_at_mode = 0
 tween_parameters = null
-tween_on_load = true
+tween_on_load = false
 inactive_update_mode = 0
 camera_3D_resource = null
 
-[node name="Character" parent="." instance=ExtResource("1_fowho")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.864139, 0)
+[node name="GridMap" type="GridMap" parent="."]
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.899949, 0.435963, 0, -0.435963, 0.899949, 0, 4.20914, 6.905)
-fov = 69.9016
+[node name="Main" parent="." instance=ExtResource("4_qlyxw")]
 
-[node name="PhantomCameraHost" type="Node" parent="Camera3D"]
-script = ExtResource("3_7d1rw")
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.35202, 2.20127)
