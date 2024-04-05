@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6g6f64ak3mer"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p45or"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h3uoo"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 3.0
+}]
+
+[node name="Character" type="CharacterBody3D"]
+
+[node name="CollisionCapsule" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_p45or")
+
+[node name="AnimatedSprite" type="AnimatedSprite3D" parent="."]
+sprite_frames = SubResource("SpriteFrames_h3uoo")

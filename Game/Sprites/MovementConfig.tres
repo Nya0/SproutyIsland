@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SpriteConfig" load_steps=3 format=3 uid="uid://cxgur00u2nsvm"]
+
+[ext_resource type="Script" path="res://Game/Classes/SpriteConfig.gd" id="1_d0n2f"]
+[ext_resource type="Texture2D" uid="uid://bn2j52whqxl3q" path="res://Assets/Art/Characters/Basic Charakter Spritesheet.png" id="2_wuhtb"]
+
+[resource]
+script = ExtResource("1_d0n2f")
+animations = Array[String](["move_down", "move_up", "move_left", "move_right"])
+spritesheet = ExtResource("2_wuhtb")
+frames = 4

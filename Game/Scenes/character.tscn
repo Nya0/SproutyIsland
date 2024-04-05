@@ -1,0 +1,40 @@
+[gd_scene load_steps=7 format=3 uid="uid://c6g6f64ak3mer"]
+
+[ext_resource type="Script" path="res://Game/Scripts/character.gd" id="1_3kxfg"]
+[ext_resource type="Texture2D" uid="uid://bn2j52whqxl3q" path="res://Assets/Art/Characters/Basic Charakter Spritesheet.png" id="1_8fvba"]
+[ext_resource type="Resource" uid="uid://cxgur00u2nsvm" path="res://Game/Sprites/MovementConfig.tres" id="2_bpg3x"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slr78"]
+atlas = ExtResource("1_8fvba")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_h3uoo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_slr78")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p45or"]
+height = 1.53633
+
+[node name="Character" type="CharacterBody3D"]
+script = ExtResource("1_3kxfg")
+gravity = 70.0
+sprite_configs = Array[Resource("res://Game/Classes/SpriteConfig.gd")]([ExtResource("2_bpg3x")])
+
+[node name="AnimatedSprite" type="AnimatedSprite3D" parent="."]
+pixel_size = 0.105
+shaded = true
+alpha_cut = 2
+texture_filter = 0
+sprite_frames = SubResource("SpriteFrames_h3uoo")
+animation = &"idle"
+
+[node name="CollisionCapsule" type="CollisionShape3D" parent="."]
+transform = Transform3D(1.06, 0, 0, 0, 1.06, 0, 0, 0, 1.06, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_p45or")
